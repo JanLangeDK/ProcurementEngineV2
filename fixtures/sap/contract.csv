@@ -1,0 +1,21 @@
+id,supplier_id,title,category,valid_from,valid_to,status,document_path
+C-2025-017,S1003,"Framework agreement, packaging, Jutland Karton ApS",packaging,2025-10-01,2026-09-30,expired,data/brain/contracts/C-2025-017.md
+C-2026-005,S1015,"Framework agreement, logistics supplies, Frisk Logistik A/S",logistics,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-005.md
+C-2026-007,S1020,"Framework agreement, maintenance parts, Teknisk Reservedel A/S",maintenance_parts,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-007.md
+C-2026-009,S1002,"Framework agreement, packaging, Danfilm Plast A/S",packaging,2026-01-01,2027-06-30,active,data/brain/contracts/C-2026-009.md
+C-2026-011,S1006,"Framework agreement, packaging, Vestkyst Emballage ApS",packaging,2026-03-01,2027-02-28,active,data/brain/contracts/C-2026-011.md
+C-2026-014,S1001,"Framework agreement, packaging, Nordpak Emballage A/S",packaging,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-014.md
+C-2026-016,S1007,"Framework agreement, packaging, Hedeland Pap & Pose A/S",packaging,2026-02-01,2027-01-31,active,data/brain/contracts/C-2026-016.md
+C-2026-019,S1016,"Framework agreement, logistics supplies, Kold Kæde Transport ApS",logistics,2025-11-06,2026-11-05,expiring,data/brain/contracts/C-2026-019.md
+C-2026-021,S1004,"Framework agreement, spices and casings, Krydderihuset ApS",spices_and_casings,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-021.md
+C-2026-024,S1008,"Framework agreement, spices and casings, Kryddergården Aarhus ApS",spices_and_casings,2026-04-01,2027-03-31,active,data/brain/contracts/C-2026-024.md
+C-2026-027,S1010,"Framework agreement, cleaning chemicals, Nordisk Hygiejne A/S",cleaning_chemicals,2025-11-19,2026-11-12,expiring,data/brain/contracts/C-2026-027.md
+C-2026-029,S1017,"Framework agreement, logistics supplies, Horsens Fragt A/S",logistics,2026-03-01,2027-02-28,active,data/brain/contracts/C-2026-029.md
+C-2026-031,S1009,"Framework agreement, cleaning chemicals, Jysk Rengøringskemi ApS",cleaning_chemicals,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-031.md
+C-2026-033,S1012,"Framework agreement, cleaning chemicals, Ringsted Rensemidler ApS",cleaning_chemicals,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-033.md
+C-2026-035,S1013,"Framework agreement, cleaning chemicals, Fynsk Rengøring Supply ApS",cleaning_chemicals,2026-02-01,2027-01-31,active,data/brain/contracts/C-2026-035.md
+C-2026-036,S1019,"Framework agreement, logistics supplies, Nordic Reefer Lines A/S",logistics,2026-06-01,2027-05-31,active,data/brain/contracts/C-2026-036.md
+C-2026-038,S1014,"Framework agreement, cleaning chemicals, Blans Kemi A/S",cleaning_chemicals,2026-05-01,2027-04-30,active,data/brain/contracts/C-2026-038.md
+C-2026-041,S1021,"Framework agreement, maintenance parts, Slagteri Service ApS",maintenance_parts,2025-11-18,2026-11-18,expiring,data/brain/contracts/C-2026-041.md
+C-2026-043,S1022,"Framework agreement, maintenance parts, Hydraulik Midtjylland ApS",maintenance_parts,2026-01-01,2027-12-31,active,data/brain/contracts/C-2026-043.md
+C-2026-046,S1024,"Framework agreement, maintenance parts, Lejer Specialisten ApS",maintenance_parts,2026-04-01,2027-03-31,active,data/brain/contracts/C-2026-046.md

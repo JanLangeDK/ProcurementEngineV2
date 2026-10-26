@@ -1,0 +1,61 @@
+id,description,category,uom
+M2001,"Packaging film 450 mm, clear",packaging,roll
+M2002,Packaging film 500 mm,packaging,roll
+M2003,Vacuum pouch 200x300 mm,packaging,box
+M2004,Vacuum pouch 300x400 mm,packaging,box
+M2005,Cardboard tray 1 kg,packaging,pcs
+M2006,Shipping carton 600x400x200,packaging,pcs
+M2007,"Label roll 100x150 mm, thermal",packaging,roll
+M2008,Stretch wrap 500 mm,packaging,roll
+M2009,Shrink bag 350x500 mm,packaging,box
+M2010,Absorbent pad 90x150 mm,packaging,box
+M2011,Strapping band PP 12 mm,packaging,roll
+M2012,Pallet corner board,packaging,pcs
+M2101,"Black pepper, ground",spices_and_casings,kg
+M2102,"Salt, coarse",spices_and_casings,kg
+M2103,Nitrite curing salt,spices_and_casings,kg
+M2104,Garlic powder,spices_and_casings,kg
+M2105,Smoked paprika,spices_and_casings,kg
+M2106,"Nutmeg, ground",spices_and_casings,kg
+M2107,Coriander seed,spices_and_casings,kg
+M2108,Natural sheep casing 22/24,spices_and_casings,bundle
+M2109,Collagen casing 26 mm,spices_and_casings,box
+M2110,Paprika sweet,spices_and_casings,kg
+M2111,Mustard seed,spices_and_casings,kg
+M2112,Juniper berries,spices_and_casings,kg
+M2201,Alkaline foam cleaner 20 L,cleaning_chemicals,can
+M2202,Chlorinated foam cleaner 20 L,cleaning_chemicals,can
+M2203,Acid descaler 20 L,cleaning_chemicals,can
+M2204,Sanitiser QAC 10 L,cleaning_chemicals,can
+M2205,Peracetic acid disinfectant 20 L,cleaning_chemicals,can
+M2206,Floor degreaser 20 L,cleaning_chemicals,can
+M2207,Hand soap 5 L,cleaning_chemicals,can
+M2208,Hand sanitiser 5 L,cleaning_chemicals,can
+M2209,"Nitrile gloves, size M",cleaning_chemicals,box
+M2210,Hairnet,cleaning_chemicals,box
+M2211,Disposable apron,cleaning_chemicals,box
+M2212,"Cleaning cloth, blue",cleaning_chemicals,box
+M2301,EUR pallet,logistics,pcs
+M2302,Plastic crate 600x400,logistics,pcs
+M2303,Cold-chain gel pack,logistics,pcs
+M2304,Insulated shipping box,logistics,pcs
+M2305,Pallet lid,logistics,pcs
+M2306,Roll container,logistics,pcs
+M2307,Temperature logger,logistics,pcs
+M2308,Dry ice pellets,logistics,kg
+M2309,Pallet label,logistics,roll
+M2310,Load-securing net,logistics,pcs
+M2311,Anti-slip sheet,logistics,pcs
+M2312,Reefer seal,logistics,box
+M2401,Conveyor belt 600 mm,maintenance_parts,m
+M2402,Bearing 6205 2RS,maintenance_parts,pcs
+M2403,Hydraulic hose 3/8,maintenance_parts,m
+M2404,Boning knife 150 mm,maintenance_parts,pcs
+M2405,Band saw blade 3350 mm,maintenance_parts,pcs
+M2406,Gear motor 0.75 kW,maintenance_parts,pcs
+M2407,V-belt B68,maintenance_parts,pcs
+M2408,Proximity sensor M18,maintenance_parts,pcs
+M2409,Food-grade grease 400 g,maintenance_parts,cartridge
+M2410,O-ring kit,maintenance_parts,box
+M2411,Pneumatic cylinder 50x100,maintenance_parts,pcs
+M2412,Stainless fastener kit,maintenance_parts,box

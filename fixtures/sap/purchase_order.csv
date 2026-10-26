@@ -1,0 +1,121 @@
+id,supplier_id,status,requester,plant,delivery_date,created_by,created_at,released_by,released_at
+PO45001,S1003,closed,Lars Bak,Horsens,2026-08-05,purchaser,2026-07-06T12:00:00+00:00,Mette Lindgren,2026-07-07T16:00:00+00:00
+PO45002,S1009,closed,Pernille Skov,Horsens,2026-07-12,purchaser,2026-06-19T09:00:00+00:00,Mette Lindgren,2026-06-20T08:00:00+00:00
+PO45003,S1014,closed,Henrik Nygaard,Blans,2026-08-07,purchaser,2026-07-11T09:00:00+00:00,Mette Lindgren,2026-07-12T06:00:00+00:00
+PO45004,S1003,closed,Lars Bak,Horsens,2026-07-17,purchaser,2026-06-25T13:00:00+00:00,Mette Lindgren,2026-06-25T22:00:00+00:00
+PO45005,S1003,closed,Lars Bak,Horsens,2026-08-17,purchaser,2026-07-22T14:00:00+00:00,Mette Lindgren,2026-07-23T01:00:00+00:00
+PO45006,S1009,closed,Anette Krogh,Ringsted,2026-07-26,purchaser,2026-07-11T10:00:00+00:00,Mette Lindgren,2026-07-11T13:00:00+00:00
+PO45007,S1017,closed,Pernille Skov,Horsens,2026-08-19,purchaser,2026-07-29T12:00:00+00:00,Mette Lindgren,2026-07-29T17:00:00+00:00
+PO45008,S1015,closed,Sanne Brandt,Blans,2026-08-15,purchaser,2026-07-27T13:00:00+00:00,Mette Lindgren,2026-07-27T19:00:00+00:00
+PO45009,S1025,closed,Lars Bak,Horsens,2026-07-28,purchaser,2026-07-02T11:00:00+00:00,Mette Lindgren,2026-07-03T10:00:00+00:00
+PO45010,S1008,closed,Pernille Skov,Horsens,2026-07-18,purchaser,2026-06-23T13:00:00+00:00,Mette Lindgren,2026-06-24T14:00:00+00:00
+PO45011,S1008,released,Henrik Nygaard,Blans,2026-08-30,purchaser,2026-08-14T12:00:00+00:00,Mette Lindgren,2026-08-15T10:00:00+00:00
+PO45012,S1006,released,Pernille Skov,Horsens,2026-10-09,purchaser,2026-09-12T13:00:00+00:00,Mette Lindgren,2026-09-13T04:00:00+00:00
+PO45013,S1024,released,Thomas Dahl,Ringsted,2026-09-28,purchaser,2026-09-15T14:00:00+00:00,Mette Lindgren,2026-09-16T03:00:00+00:00
+PO45014,S1025,released,Lars Bak,Horsens,2026-10-02,purchaser,2026-09-06T12:00:00+00:00,Mette Lindgren,2026-09-06T21:00:00+00:00
+PO45015,S1018,released,Henrik Nygaard,Blans,2026-08-22,purchaser,2026-07-30T09:00:00+00:00,Mette Lindgren,2026-07-31T08:00:00+00:00
+PO45016,S1020,released,Pernille Skov,Horsens,2026-09-22,purchaser,2026-08-24T14:00:00+00:00,Mette Lindgren,2026-08-25T03:00:00+00:00
+PO45017,S1009,released,Anette Krogh,Ringsted,2026-10-19,purchaser,2026-10-06T15:00:00+00:00,Mette Lindgren,2026-10-07T13:00:00+00:00
+PO45018,S1009,released,Pernille Skov,Horsens,2026-10-12,purchaser,2026-09-18T11:00:00+00:00,Mette Lindgren,2026-09-18T19:00:00+00:00
+PO45019,S1016,released,Anette Krogh,Ringsted,2026-10-08,purchaser,2026-09-12T09:00:00+00:00,Mette Lindgren,2026-09-13T08:00:00+00:00
+PO45020,S1005,released,Henrik Nygaard,Blans,2026-10-02,purchaser,2026-09-20T09:00:00+00:00,Mette Lindgren,2026-09-21T12:00:00+00:00
+PO45021,S1023,released,Sanne Brandt,Blans,2026-09-24,purchaser,2026-09-05T10:00:00+00:00,Mette Lindgren,2026-09-06T13:00:00+00:00
+PO45022,S1025,released,Anette Krogh,Ringsted,2026-09-09,purchaser,2026-08-22T09:00:00+00:00,Mette Lindgren,2026-08-23T13:00:00+00:00
+PO45023,S1023,released,Sanne Brandt,Blans,2026-08-28,purchaser,2026-07-30T10:00:00+00:00,Mette Lindgren,2026-07-31T06:00:00+00:00
+PO45024,S1002,released,Pernille Skov,Horsens,2026-10-02,purchaser,2026-09-13T11:00:00+00:00,Mette Lindgren,2026-09-14T13:00:00+00:00
+PO45025,S1019,released,Sanne Brandt,Blans,2026-10-06,purchaser,2026-09-24T11:00:00+00:00,Mette Lindgren,2026-09-25T16:00:00+00:00
+PO45026,S1020,released,Lars Bak,Horsens,2026-10-06,purchaser,2026-09-20T13:00:00+00:00,Mette Lindgren,2026-09-20T23:00:00+00:00
+PO45027,S1007,released,Anette Krogh,Ringsted,2026-08-25,purchaser,2026-08-08T09:00:00+00:00,Mette Lindgren,2026-08-09T08:00:00+00:00
+PO45028,S1006,released,Anette Krogh,Ringsted,2026-08-21,purchaser,2026-08-09T10:00:00+00:00,Mette Lindgren,2026-08-09T12:00:00+00:00
+PO45029,S1023,released,Sanne Brandt,Blans,2026-09-23,purchaser,2026-09-04T13:00:00+00:00,Mette Lindgren,2026-09-05T01:00:00+00:00
+PO45030,S1002,released,Thomas Dahl,Ringsted,2026-09-28,purchaser,2026-09-06T09:00:00+00:00,Mette Lindgren,2026-09-06T21:00:00+00:00
+PO45031,S1008,released,Thomas Dahl,Ringsted,2026-10-14,purchaser,2026-09-27T11:00:00+00:00,Mette Lindgren,2026-09-27T14:00:00+00:00
+PO45032,S1009,released,Thomas Dahl,Ringsted,2026-10-07,purchaser,2026-09-12T13:00:00+00:00,Mette Lindgren,2026-09-12T18:00:00+00:00
+PO45033,S1006,released,Lars Bak,Horsens,2026-08-29,purchaser,2026-08-15T12:00:00+00:00,Mette Lindgren,2026-08-16T04:00:00+00:00
+PO45034,S1015,released,Thomas Dahl,Ringsted,2026-08-27,purchaser,2026-08-04T13:00:00+00:00,Mette Lindgren,2026-08-05T09:00:00+00:00
+PO45035,S1018,released,Pernille Skov,Horsens,2026-10-09,purchaser,2026-09-13T13:00:00+00:00,Mette Lindgren,2026-09-13T22:00:00+00:00
+PO45036,S1003,released,Pernille Skov,Horsens,2026-09-06,purchaser,2026-08-24T14:00:00+00:00,Mette Lindgren,2026-08-25T17:00:00+00:00
+PO45037,S1023,released,Sanne Brandt,Blans,2026-08-21,purchaser,2026-07-24T11:00:00+00:00,Mette Lindgren,2026-07-25T03:00:00+00:00
+PO45038,S1021,released,Sanne Brandt,Blans,2026-09-04,purchaser,2026-08-23T09:00:00+00:00,Mette Lindgren,2026-08-24T02:00:00+00:00
+PO45039,S1010,released,Henrik Nygaard,Blans,2026-08-22,purchaser,2026-07-29T12:00:00+00:00,Mette Lindgren,2026-07-30T11:00:00+00:00
+PO45040,S1016,released,Sanne Brandt,Blans,2026-10-09,purchaser,2026-09-12T14:00:00+00:00,Mette Lindgren,2026-09-13T06:00:00+00:00
+PO45041,S1023,released,Pernille Skov,Horsens,2026-10-11,purchaser,2026-09-27T11:00:00+00:00,Mette Lindgren,2026-09-28T08:00:00+00:00
+PO45042,S1023,released,Anette Krogh,Ringsted,2026-10-06,purchaser,2026-09-22T10:00:00+00:00,Mette Lindgren,2026-09-22T20:00:00+00:00
+PO45043,S1021,released,Lars Bak,Horsens,2026-09-06,purchaser,2026-08-07T13:00:00+00:00,Mette Lindgren,2026-08-08T13:00:00+00:00
+PO45044,S1017,released,Anette Krogh,Ringsted,2026-09-25,purchaser,2026-09-01T13:00:00+00:00,Mette Lindgren,2026-09-02T07:00:00+00:00
+PO45045,S1015,released,Henrik Nygaard,Blans,2026-09-27,purchaser,2026-09-01T13:00:00+00:00,Mette Lindgren,2026-09-02T10:00:00+00:00
+PO45046,S1004,released,Anette Krogh,Ringsted,2026-11-18,purchaser,2026-11-03T15:00:00+00:00,Mette Lindgren,2026-11-04T15:00:00+00:00
+PO45047,S1021,released,Sanne Brandt,Blans,2026-10-29,purchaser,2026-09-30T14:00:00+00:00,Mette Lindgren,2026-10-01T19:00:00+00:00
+PO45048,S1016,released,Anette Krogh,Ringsted,2026-11-04,purchaser,2026-10-10T12:00:00+00:00,Mette Lindgren,2026-10-11T18:00:00+00:00
+PO45049,S1022,released,Sanne Brandt,Blans,2026-11-05,purchaser,2026-10-11T11:00:00+00:00,Mette Lindgren,2026-10-12T15:00:00+00:00
+PO45050,S1011,released,Pernille Skov,Horsens,2026-11-20,purchaser,2026-10-27T12:00:00+00:00,Mette Lindgren,2026-10-28T13:00:00+00:00
+PO45051,S1015,released,Lars Bak,Horsens,2026-10-28,purchaser,2026-10-06T12:00:00+00:00,Mette Lindgren,2026-10-07T00:00:00+00:00
+PO45052,S1017,released,Anette Krogh,Ringsted,2026-11-07,purchaser,2026-10-15T10:00:00+00:00,Mette Lindgren,2026-10-16T09:00:00+00:00
+PO45053,S1008,released,Anette Krogh,Ringsted,2026-11-21,purchaser,2026-11-07T09:00:00+00:00,Mette Lindgren,2026-11-08T13:00:00+00:00
+PO45054,S1025,released,Thomas Dahl,Ringsted,2026-10-27,purchaser,2026-10-13T12:00:00+00:00,Mette Lindgren,2026-10-13T17:00:00+00:00
+PO45055,S1022,released,Henrik Nygaard,Blans,2026-11-14,purchaser,2026-10-29T13:00:00+00:00,Mette Lindgren,2026-10-29T16:00:00+00:00
+PO45056,S1011,released,Pernille Skov,Horsens,2026-11-12,purchaser,2026-10-28T12:00:00+00:00,Mette Lindgren,2026-10-29T01:00:00+00:00
+PO45057,S1012,released,Anette Krogh,Ringsted,2026-11-18,purchaser,2026-11-05T11:00:00+00:00,Mette Lindgren,2026-11-06T08:00:00+00:00
+PO45058,S1021,released,Lars Bak,Horsens,2026-11-10,purchaser,2026-10-18T09:00:00+00:00,Mette Lindgren,2026-10-19T05:00:00+00:00
+PO45059,S1020,released,Pernille Skov,Horsens,2026-11-23,purchaser,2026-11-05T10:00:00+00:00,Mette Lindgren,2026-11-06T09:00:00+00:00
+PO45060,S1006,released,Anette Krogh,Ringsted,2026-11-21,purchaser,2026-11-02T15:00:00+00:00,Mette Lindgren,2026-11-02T20:00:00+00:00
+PO45061,S1024,released,Thomas Dahl,Ringsted,2026-11-13,purchaser,2026-10-15T11:00:00+00:00,Mette Lindgren,2026-10-15T16:00:00+00:00
+PO45062,S1020,released,Pernille Skov,Horsens,2026-11-08,purchaser,2026-10-09T10:00:00+00:00,Mette Lindgren,2026-10-10T13:00:00+00:00
+PO45063,S1018,released,Sanne Brandt,Blans,2026-11-18,purchaser,2026-10-20T15:00:00+00:00,Mette Lindgren,2026-10-21T19:00:00+00:00
+PO45064,S1022,released,Pernille Skov,Horsens,2026-10-23,purchaser,2026-10-03T09:00:00+00:00,Mette Lindgren,2026-10-03T16:00:00+00:00
+PO45065,S1015,released,Thomas Dahl,Ringsted,2026-11-08,purchaser,2026-10-18T11:00:00+00:00,Mette Lindgren,2026-10-19T00:00:00+00:00
+PO45066,S1020,released,Anette Krogh,Ringsted,2026-10-22,purchaser,2026-10-05T15:00:00+00:00,Mette Lindgren,2026-10-05T21:00:00+00:00
+PO45067,S1012,released,Pernille Skov,Horsens,2026-11-16,purchaser,2026-11-02T10:00:00+00:00,Mette Lindgren,2026-11-03T11:00:00+00:00
+PO45068,S1003,released,Henrik Nygaard,Blans,2026-10-23,purchaser,2026-10-09T14:00:00+00:00,Mette Lindgren,2026-10-10T08:00:00+00:00
+PO45069,S1016,released,Pernille Skov,Horsens,2026-11-04,purchaser,2026-10-11T12:00:00+00:00,Mette Lindgren,2026-10-12T04:00:00+00:00
+PO45070,S1024,released,Anette Krogh,Ringsted,2026-11-12,purchaser,2026-10-26T11:00:00+00:00,Mette Lindgren,2026-10-26T22:00:00+00:00
+PO45071,S1025,released,Thomas Dahl,Ringsted,2026-11-11,purchaser,2026-10-12T13:00:00+00:00,Mette Lindgren,2026-10-12T17:00:00+00:00
+PO45072,S1004,released,Lars Bak,Horsens,2026-10-25,purchaser,2026-10-09T10:00:00+00:00,Mette Lindgren,2026-10-10T12:00:00+00:00
+PO45073,S1007,released,Sanne Brandt,Blans,2026-10-25,purchaser,2026-10-11T11:00:00+00:00,Mette Lindgren,2026-10-12T03:00:00+00:00
+PO45074,S1009,released,Anette Krogh,Ringsted,2026-11-18,purchaser,2026-10-22T13:00:00+00:00,Mette Lindgren,2026-10-23T05:00:00+00:00
+PO45075,S1004,released,Henrik Nygaard,Blans,2026-11-17,purchaser,2026-10-28T10:00:00+00:00,Mette Lindgren,2026-10-29T12:00:00+00:00
+PO45076,S1017,released,Lars Bak,Horsens,2026-11-23,purchaser,2026-11-08T11:00:00+00:00,Mette Lindgren,2026-11-09T02:00:00+00:00
+PO45077,S1005,released,Lars Bak,Horsens,2026-10-29,purchaser,2026-10-08T14:00:00+00:00,Mette Lindgren,2026-10-09T13:00:00+00:00
+PO45078,S1016,released,Anette Krogh,Ringsted,2026-11-22,purchaser,2026-10-25T14:00:00+00:00,Mette Lindgren,2026-10-26T01:00:00+00:00
+PO45079,S1020,released,Sanne Brandt,Blans,2026-10-24,purchaser,2026-10-05T12:00:00+00:00,Mette Lindgren,2026-10-06T09:00:00+00:00
+PO45080,S1008,released,Anette Krogh,Ringsted,2026-10-25,purchaser,2026-10-13T10:00:00+00:00,Mette Lindgren,2026-10-13T21:00:00+00:00
+PO45081,S1010,released,Thomas Dahl,Ringsted,2026-11-04,purchaser,2026-10-19T15:00:00+00:00,Mette Lindgren,2026-10-20T01:00:00+00:00
+PO45082,S1003,released,Thomas Dahl,Ringsted,2026-11-09,purchaser,2026-10-18T09:00:00+00:00,Mette Lindgren,2026-10-18T11:00:00+00:00
+PO45083,S1004,released,Henrik Nygaard,Blans,2026-11-22,purchaser,2026-10-28T10:00:00+00:00,Mette Lindgren,2026-10-28T16:00:00+00:00
+PO45084,S1021,released,Lars Bak,Horsens,2026-11-15,purchaser,2026-10-17T14:00:00+00:00,Mette Lindgren,2026-10-17T23:00:00+00:00
+PO45085,S1024,released,Pernille Skov,Horsens,2026-11-23,purchaser,2026-10-25T15:00:00+00:00,Mette Lindgren,2026-10-26T14:00:00+00:00
+PO45086,S1021,released,Thomas Dahl,Ringsted,2026-11-13,purchaser,2026-10-30T12:00:00+00:00,Mette Lindgren,2026-10-31T17:00:00+00:00
+PO45087,S1001,released,Sanne Brandt,Blans,2026-10-24,purchaser,2026-09-29T09:00:00+00:00,Mette Lindgren,2026-09-30T01:00:00+00:00
+PO45088,S1004,released,Henrik Nygaard,Blans,2026-10-15,purchaser,2026-09-30T13:00:00+00:00,Mette Lindgren,2026-10-01T12:00:00+00:00
+PO45089,S1006,released,Thomas Dahl,Ringsted,2026-10-26,purchaser,2026-10-04T13:00:00+00:00,Mette Lindgren,2026-10-05T04:00:00+00:00
+PO45090,S1011,released,Thomas Dahl,Ringsted,2026-11-16,purchaser,2026-10-22T11:00:00+00:00,Mette Lindgren,2026-10-22T16:00:00+00:00
+PO45091,S1003,released,Anette Krogh,Ringsted,2026-11-16,purchaser,2026-11-04T11:00:00+00:00,Mette Lindgren,2026-11-04T18:00:00+00:00
+PO45092,S1015,released,Anette Krogh,Ringsted,2026-11-20,purchaser,2026-10-28T09:00:00+00:00,Mette Lindgren,2026-10-29T00:00:00+00:00
+PO45093,S1009,released,Anette Krogh,Ringsted,2026-10-28,purchaser,2026-10-09T12:00:00+00:00,Mette Lindgren,2026-10-10T08:00:00+00:00
+PO45094,S1001,released,Sanne Brandt,Blans,2026-11-16,purchaser,2026-10-19T09:00:00+00:00,Mette Lindgren,2026-10-19T23:00:00+00:00
+PO45095,S1003,released,Anette Krogh,Ringsted,2026-11-10,purchaser,2026-10-19T10:00:00+00:00,Mette Lindgren,2026-10-19T22:00:00+00:00
+PO45096,S1024,released,Henrik Nygaard,Blans,2026-11-01,purchaser,2026-10-18T13:00:00+00:00,Mette Lindgren,2026-10-19T11:00:00+00:00
+PO45097,S1019,released,Anette Krogh,Ringsted,2026-10-29,purchaser,2026-10-01T13:00:00+00:00,Mette Lindgren,2026-10-01T21:00:00+00:00
+PO45098,S1009,released,Henrik Nygaard,Blans,2026-11-13,purchaser,2026-10-21T14:00:00+00:00,Mette Lindgren,2026-10-22T18:00:00+00:00
+PO45099,S1020,released,Pernille Skov,Horsens,2026-10-31,purchaser,2026-10-12T09:00:00+00:00,Mette Lindgren,2026-10-12T15:00:00+00:00
+PO45100,S1016,released,Thomas Dahl,Ringsted,2026-11-07,purchaser,2026-10-20T10:00:00+00:00,Mette Lindgren,2026-10-21T07:00:00+00:00
+PO45101,S1008,released,Henrik Nygaard,Blans,2026-10-31,purchaser,2026-10-17T10:00:00+00:00,Mette Lindgren,2026-10-18T12:00:00+00:00
+PO45102,S1023,released,Thomas Dahl,Ringsted,2026-11-22,purchaser,2026-10-27T15:00:00+00:00,Mette Lindgren,2026-10-28T11:00:00+00:00
+PO45103,S1004,released,Anette Krogh,Ringsted,2026-11-19,purchaser,2026-10-20T14:00:00+00:00,Mette Lindgren,2026-10-21T12:00:00+00:00
+PO45104,S1017,released,Henrik Nygaard,Blans,2026-11-11,purchaser,2026-10-20T10:00:00+00:00,Mette Lindgren,2026-10-21T02:00:00+00:00
+PO45105,S1023,released,Anette Krogh,Ringsted,2026-10-26,purchaser,2026-09-29T12:00:00+00:00,Mette Lindgren,2026-09-30T10:00:00+00:00
+PO45106,S1022,released,Lars Bak,Horsens,2026-11-10,purchaser,2026-10-21T13:00:00+00:00,Mette Lindgren,2026-10-21T16:00:00+00:00
+PO45107,S1016,released,Anette Krogh,Ringsted,2026-11-13,purchaser,2026-10-16T09:00:00+00:00,Mette Lindgren,2026-10-16T20:00:00+00:00
+PO45108,S1011,released,Anette Krogh,Ringsted,2026-11-20,purchaser,2026-10-25T09:00:00+00:00,Mette Lindgren,2026-10-25T12:00:00+00:00
+PO45109,S1006,released,Pernille Skov,Horsens,2026-11-14,purchaser,2026-10-24T09:00:00+00:00,Mette Lindgren,2026-10-25T07:00:00+00:00
+PO45110,S1020,released,Anette Krogh,Ringsted,2026-10-27,purchaser,2026-09-29T12:00:00+00:00,Mette Lindgren,2026-09-30T04:00:00+00:00
+PO45111,S1014,parked,Anette Krogh,Ringsted,2026-10-24,buyer,2026-09-28T15:00:00+00:00,,
+PO45112,S1012,parked,Sanne Brandt,Blans,2026-11-03,buyer,2026-10-12T13:00:00+00:00,,
+PO45113,S1014,parked,Pernille Skov,Horsens,2026-11-21,buyer,2026-10-24T10:00:00+00:00,,
+PO45114,S1002,parked,Thomas Dahl,Ringsted,2026-10-25,buyer,2026-09-29T09:00:00+00:00,,
+PO45115,S1009,parked,Pernille Skov,Horsens,2026-11-12,buyer,2026-10-29T13:00:00+00:00,,
+PO45116,S1020,parked,Henrik Nygaard,Blans,2026-11-02,buyer,2026-10-20T10:00:00+00:00,,
+PO45117,S1009,parked,Sanne Brandt,Blans,2026-11-19,buyer,2026-10-24T13:00:00+00:00,,
+PO45118,S1021,parked,Anette Krogh,Ringsted,2026-11-24,buyer,2026-11-07T11:00:00+00:00,,
+PO45119,S1007,parked,Pernille Skov,Horsens,2026-11-14,buyer,2026-10-24T12:00:00+00:00,,
+PO45120,S1001,parked,Anette Krogh,Ringsted,2026-11-17,buyer,2026-10-26T14:00:00+00:00,,

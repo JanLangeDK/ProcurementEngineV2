@@ -1,0 +1,10 @@
+{
+  "agent": "agent.discrepancy_analysis",
+  "threshold": 1.0,
+  "cases": [
+    {"name": "price-difference-is-external", "inputs": {"validation_result": {"status": "invalid", "issues": ["M2110: invoiced 52.00 per unit, contract price 48.00"]}, "comparison": {"match": {"differences": [{"kind": "price", "detail": "M2110: invoiced 52.00 per unit, contract price 48.00", "total_delta": "400.00"}]}}, "process_instance_id": "eval"}, "expect": {"cause": "external", "confidence": {"min": 0.6}}},
+    {"name": "missing-po-is-internal", "inputs": {"validation_result": {"status": "invalid", "issues": []}, "comparison": {"match": {"differences": [{"kind": "no_po", "detail": "Invoice names no PO", "total_delta": null}]}}, "process_instance_id": "eval"}, "expect": {"cause": "internal"}},
+    {"name": "revalidate-corrected", "inputs": {"supplier_reply": "Sorry, corrected invoice follows, credit note CN-2026-120 for the difference.", "validation_result": {"status": "invalid"}, "process_instance_id": "eval"}, "expect": {"revalidation": "corrected"}},
+    {"name": "revalidate-unresolved", "inputs": {"supplier_reply": "We insist on 52.00.", "validation_result": {"status": "invalid"}, "process_instance_id": "eval"}, "expect": {"revalidation": "unresolved"}}
+  ]
+}

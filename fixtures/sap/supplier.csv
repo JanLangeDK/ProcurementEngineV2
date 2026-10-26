@@ -1,0 +1,26 @@
+id,name,country,email,phone,payment_terms_days,blocked
+S1001,Nordpak Emballage A/S,DK,ap@nordpak-emballage.example,+45 34 13 45 41,30,false
+S1002,Danfilm Plast A/S,DK,ap@danfilm-plast.example,+45 48 27 23 96,30,false
+S1003,Jutland Karton ApS,DK,ap@jutland-karton.example,+45 31 85 64 14,60,false
+S1004,Krydderihuset ApS,DK,ap@krydderihuset.example,+45 23 21 37 39,30,false
+S1005,Naturtarm Danmark A/S,DK,ap@naturtarm-danmark.example,+45 97 13 81 35,60,false
+S1006,Vestkyst Emballage ApS,DK,ap@vestkyst-emballage.example,+45 73 38 67 85,60,false
+S1007,Hedeland Pap & Pose A/S,DK,ap@hedeland-pap.example,+45 20 30 99 64,30,false
+S1008,Kryddergården Aarhus ApS,DK,ap@kryddergaarden-aarhus.example,+45 55 29 37 53,30,false
+S1009,Jysk Rengøringskemi ApS,DK,ap@jysk-rengoeringskemi.example,+45 33 21 58 22,30,false
+S1010,Nordisk Hygiejne A/S,DK,ap@nordisk-hygiejne.example,+45 64 87 43 15,30,false
+S1011,Skagen Tarm & Krydderi A/S,SE,ap@skagen-tarm.example,+45 88 25 58 20,45,false
+S1012,Ringsted Rensemidler ApS,DK,ap@ringsted-rensemidler.example,+45 57 90 89 56,60,false
+S1013,Fynsk Rengøring Supply ApS,DK,ap@fynsk-rengoering.example,+45 44 18 15 94,60,true
+S1014,Blans Kemi A/S,DK,ap@blans-kemi.example,+45 57 20 39 22,30,false
+S1015,Frisk Logistik A/S,DK,ap@frisk-logistik.example,+45 55 68 91 56,45,false
+S1016,Kold Kæde Transport ApS,DK,ap@kold-kaede.example,+45 67 55 36 95,30,false
+S1017,Horsens Fragt A/S,DK,ap@horsens-fragt.example,+45 29 87 91 31,30,false
+S1018,Østjysk Distribution ApS,DE,ap@oestjysk-distribution.example,+45 51 30 69 58,60,false
+S1019,Nordic Reefer Lines A/S,DK,ap@nordic-reefer.example,+45 91 38 97 51,30,false
+S1020,Teknisk Reservedel A/S,DK,ap@teknisk-reservedel.example,+45 49 14 50 61,30,false
+S1021,Slagteri Service ApS,DK,ap@slagteri-service.example,+45 28 37 82 50,30,false
+S1022,Hydraulik Midtjylland ApS,DK,ap@hydraulik-midtjylland.example,+45 83 60 92 68,30,false
+S1023,Kniv & Savteknik A/S,DK,ap@kniv-and.example,+45 53 27 41 81,30,false
+S1024,Lejer Specialisten ApS,DK,ap@lejer-specialisten.example,+45 53 84 64 84,60,false
+S1025,Krydderi Import Syd ApS,NL,ap@krydderi-import.example,+45 66 38 27 75,45,false

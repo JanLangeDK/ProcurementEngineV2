@@ -1,0 +1,10 @@
+{
+  "agent": "agent.credit_note_request",
+  "threshold": 1.0,
+  "cases": [
+    {"name": "price-deviation-draft-cites-contract", "inputs": {"match_result": {"invoice": {"id": "INV7731", "supplier_id": "S1004", "supplier_email": "ap@krydderihuset.example", "amount": "5200.00", "currency": "DKK", "invoice_number": "829884", "po_id": "PO45088"}, "within_tolerance": false, "total_deviation": "400.00", "blocking": [{"kind": "price", "detail": "M2110: invoiced 52.00 per unit, contract price 48.00 (C-2026-021), difference 400.00 on 100."}], "match": {"differences": [{"kind": "price", "detail": "M2110: invoiced 52.00 per unit, contract price 48.00 (C-2026-021), difference 400.00 on 100.", "total_delta": "400.00"}]}}, "supplier_context": {"history": ["Earlier late deliveries: 0"], "contract_facts": ["C-2026-021 active"]}, "process_instance_id": "eval", "objective": "Ask for a credit note"},
+     "expect": {"credit_note_request": {"contains": "C-2026-021"}, "confidence": {"min": 0.6}, "draft_id": {"contains": ""}}},
+    {"name": "draft-states-the-difference", "inputs": {"match_result": {"invoice": {"id": "INV7731", "supplier_id": "S1004", "supplier_email": "ap@krydderihuset.example", "amount": "5200.00", "currency": "DKK", "invoice_number": "829884", "po_id": "PO45088"}, "within_tolerance": false, "total_deviation": "400.00", "blocking": [{"kind": "price", "detail": "M2110: invoiced 52.00 per unit, contract price 48.00 (C-2026-021), difference 400.00 on 100."}], "match": {"differences": [{"kind": "price", "detail": "M2110: invoiced 52.00 per unit, contract price 48.00 (C-2026-021), difference 400.00 on 100.", "total_delta": "400.00"}]}}, "supplier_context": {}, "process_instance_id": "eval", "objective": "Ask for a credit note"},
+     "expect": {"credit_note_request": {"contains": "400.00"}, "confidence": {"min": 0.6}}}
+  ]
+}
