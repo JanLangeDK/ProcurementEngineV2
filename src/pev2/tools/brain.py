@@ -120,9 +120,10 @@ def ask(args: dict[str, Any]) -> dict[str, Any]:
     if not hits:
         raise BusinessException("no_answer", "Nothing in the knowledge base matches the question.")
     best = hits[0]
-    paragraphs = [p.strip() for p in best[2].split("\n\n") if any(w in p.lower() for w in words)]
+    body = re.sub(r"\A---.*?---\s*", "", best[2], count=1, flags=re.S)  # the frontmatter is metadata, not an answer
+    paragraphs = [p.strip() for p in body.split("\n\n") if any(w in p.lower() for w in words)]
     return {
-        "answer": (paragraphs[0] if paragraphs else best[2][:600])[:800],
+        "answer": (paragraphs[0] if paragraphs else body[:600])[:800],
         "citations": [str(h[1].relative_to(DOCS)) for h in hits[:3]],
     }
 

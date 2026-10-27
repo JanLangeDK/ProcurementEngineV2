@@ -253,7 +253,7 @@ def review_decide(choice: str | None, decision: str, note: str, persona: str) ->
 
 def proposal_markdown(out: dict[str, Any]) -> str:
     acts = "\n".join(
-        f"- {'✅' if a.get('supported') else '⛔'} **{a.get('who')}**: {a.get('action')}"
+        f"- {'OK' if a.get('supported') else 'NOT SUPPORTED'} **{a.get('who')}**: {a.get('action')}"
         + (f" — tool `{a['tool']}`" if a.get("tool") else "")
         + (f" *({a['note']})*" if a.get("note") else "")
         for a in out.get("proposed_actions", [])
@@ -266,8 +266,9 @@ def proposal_markdown(out: dict[str, Any]) -> str:
     return (
         f"### Investigator proposal · risk **{out.get('risk')}** · recommends **{out.get('recommendation')}** · owner {out.get('owner')}\n\n"
         f"{out.get('summary')}\n\n**Hypothesis:** {out.get('hypothesis') or '—'}\n\n**Findings**\n{facts or '- none'}\n\n"
-        f"**Proposed actions** (nothing here executes; ⛔ = not supported by the platform today)\n{acts or '- none'}\n\n"
-        f"**Missing on the platform** (recorded as discoveries)\n{gaps or '- none'}\n\n*{out.get('rationale')}*"
+        f"**Proposed actions** (nothing here executes; NOT SUPPORTED = the platform cannot do it today)\n{acts or '- none'}\n\n"
+        f"**Missing on the platform** (recorded as discoveries)\n{gaps or '- none'}"
+        + (f"\n\n*{out['rationale']}*" if out.get("rationale") else "")
     )
 
 
