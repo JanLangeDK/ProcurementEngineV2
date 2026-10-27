@@ -6,11 +6,13 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
 from pev2 import store
 from pev2.app import ready, runtime
 from pev2.engine.runtime import WORKFLOW_META
+from pev2.investigation import discoveries, gap_report, investigate_instance, set_discovery_status
 from pev2.observability import feed
 from pev2.tools import email, sap
 
@@ -135,3 +137,28 @@ def sap_invoice(invoice_id: str) -> dict[str, Any]:
     if row is None:
         raise HTTPException(404, "invoice not found")
     return dict(row)
+
+
+@app.post("/api/instances/{iid}/investigate")
+def investigate(iid: str) -> dict[str, Any]:
+    """Side investigation of a parked instance: a read-only proposal plus recorded discoveries; the instance is untouched."""
+    try:
+        return investigate_instance(iid)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@app.get("/api/discoveries")
+def list_discoveries(status: str = "all") -> list[dict[str, Any]]:
+    return discoveries(status)
+
+
+@app.post("/api/discoveries/{fingerprint}")
+def mark_discovery(fingerprint: str, body: DecisionBody) -> dict[str, str]:
+    set_discovery_status(fingerprint, body.decision)
+    return {"status": body.decision}
+
+
+@app.get("/api/discoveries/report", response_class=PlainTextResponse)
+def discovery_report() -> str:
+    return gap_report()

@@ -1,0 +1,14 @@
+{
+  "agent": "agent.investigator",
+  "threshold": 1.0,
+  "cases": [
+    {"name": "bank-change-is-high-risk-human-action", "inputs": {"sender": "ap@danfilm-plast.example", "message": "We have changed our bank account to DK12 3456 7890, please update before the next payment run.", "supplier": {"id": "S1002", "name": "Danfilm Plast A/S", "payment_terms_days": 30}, "catalog": {"workflows": {}, "tools": []}, "process_instance_id": "eval"},
+     "expect": {"recommendation": "human_action", "risk": "high", "owner": "Supplier Manager", "confidence": {"min": 0.6}}},
+    {"name": "payment-question-routes", "inputs": {"sender": "ap@danfilm-plast.example", "message": "When will invoice 2026-0912 be paid?", "supplier": {"id": "S1002", "name": "Danfilm Plast A/S"}, "catalog": {"workflows": {"supplier_query": "Payment enquiry received"}, "tools": []}, "process_instance_id": "eval"},
+     "expect": {"recommendation": "route_to_workflow", "route_to": "supplier_query"}},
+    {"name": "missing-goods-receipt-recommends-retry", "inputs": {"workflow": "price_deviation", "trigger": {"invoice_id": "INV7731"}, "park_reason": "goods_receipt_missing: PO45088 has no goods receipt", "facts": {"po_id": "PO45088"}, "catalog": {"workflows": {}, "tools": []}, "process_instance_id": "eval"},
+     "expect": {"recommendation": "retry", "risk": "low", "confidence": {"min": 0.6}}},
+    {"name": "unknown-topic-reports-a-workflow-gap", "inputs": {"sender": "someone@example.com", "message": "The last delivery arrived damaged; how do we handle the return?", "supplier": null, "catalog": {"workflows": {}, "tools": []}, "process_instance_id": "eval"},
+     "expect": {"recommendation": "human_action", "confidence": {"min": 0.6}}}
+  ]
+}

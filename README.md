@@ -36,16 +36,35 @@ uv run pev2 evals run          # the agents' eval sets with the fixture provider
   and the events workflows wait for (a supplier reply, an order confirmation); scheduler tick; reset; simulated outages.
 - **Instances**: every workflow instance with its status and the step it is at; select one for its full audit trail.
 - **Approvals**: pick who you are; approve or reject what is waiting for you (segregation of duties is enforced).
-- **Reviews**: parked instances (modelled exceptions, failed gates, low agent confidence, outages) — retry or abandon.
+- **Reviews**: parked instances (modelled exceptions, failed gates, low agent confidence, outages) — retry or abandon,
+  or ask the investigator for a read-only proposal.
+- **Discoveries**: what the investigator found missing, grouped and counted; export the gap report for the studio.
 - **Cases & mail**, **SAP-sim**, **Audit**: what the simulated systems hold.
 - **Policy**: edit the invoice-handling tolerance and fire INV7731 again — the same code behaves differently.
+
+## Uncovered cases: the investigator and the loopback
+
+The four workflows cover what was modelled. A case nobody modelled, say a supplier mail "we changed our bank
+account, update it before the next payment run", goes to the **uncovered-case workflow**: the **Investigator agent**
+establishes the facts with read-only tools, states a hypothesis and the risk, proposes actions, and lists what the
+platform is missing to handle the case. Three things are guaranteed in code, not in a prompt:
+
+- the investigator holds only read tools; anything else it asks for is refused by the registry and recorded;
+- a proposal never executes: a gate marks each proposed action as supported or not, a case is opened for the owner,
+  and a person decides in the Reviews tab;
+- every missing tool, workflow, policy, data or permission lands in **Discoveries**, grouped and counted, and the
+  **gap report** is the brief the Agent Architecture Studio turns into the next scenario. Ten parked cases with the
+  same gap become one new modelled path.
+
+The same investigator can be asked about any parked instance ("Ask the investigator" in Reviews) without changing it.
 
 ## How it is built (section 11 of the architecture document)
 
 ```
 src/pev2/
   engine/runtime.py     the durable workflow runtime: replay-based steps, waits, approvals, reviews, gates, scheduler tick
-  workflows/            one module per workflow of §4 (steps named as in the document)
+  workflows/            one module per workflow of §4 (steps named as in the document) + unknown_case
+  investigation.py      the investigator's guardrails, the discoveries log and the gap report (the loopback)
   services/             deterministic services of §3, rules as functions (matching, payments, purchasing, enquiries, invoices)
   gates/                validation gates of §5
   tools/                the catalog of §3: registry (allow-lists, idempotency, retries, authority matrix) and mock adapters

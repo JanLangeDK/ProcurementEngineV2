@@ -21,6 +21,7 @@ import gradio as gr
 
 from pev2 import config, store
 from pev2.app import ready, runtime
+from pev2.investigation import discoveries, gap_report, investigate_instance, set_discovery_status
 from pev2.observability import feed
 from pev2.tools import brain, email, sap
 
@@ -130,6 +131,22 @@ def supplier_confirmation(po_number: str, status: str, date: str, note: str) -> 
     )
 
 
+UNCOVERED = {
+    "Bank account change (fraud pattern)": "We have changed our bank account to DK12 3456 7890 1234, please update before the next payment run. Urgent, regards, Danfilm accounting.",
+    "Contract renewal question": "Our framework agreement C-2026-014 expires soon. Can we renew at the same prices for two more years?",
+    "Quality complaint about a delivery": "The last delivery of M2001 arrived damaged; 40 rolls are unusable. How do we handle the return and the invoice?",
+    "A payment question (covered, gets routed)": "When will invoice 2026-0912 be paid?",
+}
+
+
+def fire_uncovered(sender_label: str, choice: str, text: str) -> str:
+    sender = SUPPLIER_SENDERS[sender_label]
+    body = text.strip() or UNCOVERED[choice]
+    email.inbound(sender, "Message", body)
+    iid = runtime.start("unknown_case", {"message": body, "sender": sender})
+    return _status_line(iid)
+
+
 def tick() -> str:
     actions = runtime.tick()
     return f"Scheduler tick at {config.now().isoformat()}: {actions or 'nothing due'}"
@@ -232,6 +249,76 @@ def review_decide(choice: str | None, decision: str, note: str, persona: str) ->
     rid = int(choice.split(" ·")[0])
     inst = runtime.decide_review(rid, "retry" if decision == "Retry the step" else "abandon", note, persona)
     return _status_line(inst["id"])
+
+
+def proposal_markdown(out: dict[str, Any]) -> str:
+    acts = "\n".join(
+        f"- {'✅' if a.get('supported') else '⛔'} **{a.get('who')}**: {a.get('action')}"
+        + (f" — tool `{a['tool']}`" if a.get("tool") else "")
+        + (f" *({a['note']})*" if a.get("note") else "")
+        for a in out.get("proposed_actions", [])
+    )
+    gaps = "\n".join(
+        f"- **{m.get('kind')}**: {m.get('description')} — {m.get('why_needed', '')}"
+        for m in out.get("missing_capabilities", [])
+    )
+    facts = "\n".join(f"- {f}" for f in out.get("findings", []))
+    return (
+        f"### Investigator proposal · risk **{out.get('risk')}** · recommends **{out.get('recommendation')}** · owner {out.get('owner')}\n\n"
+        f"{out.get('summary')}\n\n**Hypothesis:** {out.get('hypothesis') or '—'}\n\n**Findings**\n{facts or '- none'}\n\n"
+        f"**Proposed actions** (nothing here executes; ⛔ = not supported by the platform today)\n{acts or '- none'}\n\n"
+        f"**Missing on the platform** (recorded as discoveries)\n{gaps or '- none'}\n\n*{out.get('rationale')}*"
+    )
+
+
+def review_investigate(choice: str | None) -> str:
+    if not choice:
+        return "Pick a review item first."
+    rid = int(choice.split(" ·")[0])
+    row = next((r for r in runtime.reviews() if r["id"] == rid), None)
+    if row is None:
+        return "Already decided."
+    if row["step"] == "Investigator proposal":
+        return proposal_markdown(
+            row["payload"]
+            | {
+                "summary": row["reason"],
+                "risk": row["reason"].split(" risk")[0],
+                "recommendation": "human decides",
+                "rationale": "",
+                "findings": row["payload"].get("findings", []),
+            }
+        )
+    return proposal_markdown(investigate_instance(row["instance_id"]))
+
+
+DISCOVERY_HEADERS = ["seen", "kind", "gap", "why", "status", "first seen", "instances"]
+
+
+def discovery_rows() -> list[list[Any]]:
+    return [
+        [d["seen"], d["kind"], d["description"], d["evidence"], d["status"], d["first_seen"][:16], d["instances"] or ""]
+        for d in discoveries("all")
+    ]
+
+
+def discovery_choices() -> list[str]:
+    return [f"{d['fingerprint']} · {d['kind']} · {d['description'][:80]}" for d in discoveries("all")]
+
+
+def discovery_set(choice: str | None, status: str) -> str:
+    if not choice:
+        return "Pick a discovery."
+    set_discovery_status(choice.split(" ·")[0], status)
+    return f"Marked {status}."
+
+
+def export_gap_report() -> str:
+    text = gap_report()
+    path = config.ROOT / "data" / "runtime" / "gap-report.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+    return f"Written to `{path}`; paste it into the studio as the brief for the next scenario.\n\n---\n\n" + text
 
 
 def outages(sap_down: bool, email_down: bool, brain_down: bool, jira_down: bool) -> str:
@@ -354,6 +441,21 @@ def build_app() -> gr.Blocks:
                         gr.Button("Component requirement identified", variant="primary").click(
                             fire_requirement, req, out
                         )
+                with gr.Row():
+                    with gr.Column(scale=1):
+                        gr.Markdown(
+                            "**Something no workflow covers** (the investigator reads it, proposes, and reports what is missing)"
+                        )
+                    with gr.Column(scale=3):
+                        with gr.Row():
+                            u_sender = gr.Dropdown(
+                                list(SUPPLIER_SENDERS), value="Danfilm Plast A/S (S1002)", label="From"
+                            )
+                            u_choice = gr.Dropdown(list(UNCOVERED), value=list(UNCOVERED)[0], label="Example")
+                        u_text = gr.Textbox(label="Or write your own message (leave empty to use the example)", lines=2)
+                        gr.Button("Unmatched message received", variant="primary").click(
+                            fire_uncovered, [u_sender, u_choice, u_text], out
+                        )
                 gr.Markdown("---\n**Events a workflow waits for**")
                 with gr.Row():
                     with gr.Column():
@@ -423,7 +525,27 @@ def build_app() -> gr.Blocks:
                 )
                 rv_note = gr.Textbox(label="Note")
                 rv_out = gr.Markdown()
-                gr.Button("Decide", variant="primary").click(review_decide, [rv, rv_decision, rv_note, persona], rv_out)
+                with gr.Row():
+                    gr.Button("Decide", variant="primary").click(
+                        review_decide, [rv, rv_decision, rv_note, persona], rv_out
+                    )
+                    rv_inv = gr.Button("Ask the investigator (read-only; proposes, never acts)")
+                rv_proposal = gr.Markdown()
+                rv_inv.click(review_investigate, rv, rv_proposal)
+            with gr.Tab("Discoveries"):
+                gr.Markdown(
+                    "The loopback. Every capability the investigator found missing: tools, workflows, policies, data, permissions. Grouped, counted, exportable as the brief for the studio's next scenario."
+                )
+                dt = gr.Dataframe(value=discovery_rows(), headers=DISCOVERY_HEADERS, interactive=False, wrap=True)
+                gr.Timer(3).tick(discovery_rows, None, dt)
+                with gr.Row():
+                    d_pick = gr.Dropdown(discovery_choices(), label="Discovery")
+                    gr.Timer(3).tick(lambda: gr.Dropdown(choices=discovery_choices()), None, d_pick)
+                    d_status = gr.Radio(["accepted", "dismissed", "open"], value="accepted", label="Mark as")
+                    d_out = gr.Markdown()
+                    gr.Button("Apply").click(discovery_set, [d_pick, d_status], d_out)
+                g_out = gr.Markdown()
+                gr.Button("Export gap report for the studio", variant="primary").click(export_gap_report, None, g_out)
             with gr.Tab("Cases & mail"):
                 gr.Markdown("**Cases** (simulated case management)")
                 ct = gr.Dataframe(

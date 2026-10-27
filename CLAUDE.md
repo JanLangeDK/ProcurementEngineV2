@@ -14,6 +14,9 @@ implements it. Read `README.md` for the picture and `docs/architecture.md` §11.
 - **Rules are tests.** The logic lines under each service in §3 are the unit tests in `tests/services/`. Write the
   test from the rule text first.
 - **Approvals are real pauses.** Never auto-approve, not even in demos; tests decide through the runtime API.
+- **The unknown case is the investigator's, and it only proposes.** `investigation.py` holds the guardrails (read-only
+  allow-list, `investigation_safe` gate, discoveries log). Never give it a write tool; never execute a proposal from code.
+  New paths come from the gap report through the studio, not from widening the agent.
 - **Agents only through the gateway**, with the tool allow-list, limits and output schema of §2. Untrusted content
   goes to the model inside `<data>` blocks.
 - **Knowledge lives in three layers**: hard limits in `tools/limits.py` (enforced by the tool registry, never a

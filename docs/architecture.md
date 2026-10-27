@@ -3965,3 +3965,14 @@ flowchart LR
   classDef business_object fill:#0f766e,color:#fff
   classDef role fill:#7c3aed,color:#fff
 ```
+
+
+## 12. Addendum (implementation): uncovered cases, the investigator and the loopback
+
+Added after the first build, from the question "what happens with a case nobody modelled?".
+
+- **Workflow `unknown_case`** ("A message no workflow covers", trigger "Unmatched message received"): classify (hint only) → investigate (agent) → gate "Proposal is safe" → record discoveries → open case for the owner → review "Investigator proposal" → "Resolved by human", or "Routed to a workflow" when the investigator finds a covering workflow.
+- **Agent `agent.investigator`**: purpose "work a case no workflow covers: establish the facts with read-only tools, propose, report what the platform lacks; never act". Tools: every catalog tool with side effect `read`. Output: summary, findings, hypothesis, risk, proposed_actions (action, tool or null, who), missing_capabilities (kind ∈ tool | workflow | policy | data | permission), recommendation ∈ route_to_workflow | human_action | retry | abandon | escalate, owner, confidence, rationale.
+- **Gate `investigation_safe`**: a proposed action naming a tool outside the catalog is flagged unsupported; a write tool is flagged "only through a modelled workflow with its approval"; an unknown recommendation or an unknown route target fails the gate. A proposal is never executed by the platform.
+- **Discoveries** (`wf_discovery`): every missing capability, fingerprinted so repeats count as occurrences; status open | accepted | dismissed. Tool calls the investigator asked for and was refused become discoveries of kind `permission`.
+- **Gap report**: the grouped discoveries plus a scenario stub per workflow gap, the brief for the studio's next scenario. This closes the loop: unknown case → proposal and human decision now → modelled path later.

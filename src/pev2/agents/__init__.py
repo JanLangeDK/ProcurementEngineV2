@@ -66,6 +66,30 @@ class DiscrepancyOut(BaseModel):
     status: str = "ok"
 
 
+class InvestigationOut(BaseModel):
+    """What the investigator hands back: a reading of the case, what it proposes, and what the platform lacks.
+    Nothing in it executes; the platform decides what is supported (gates) and a human decides what happens."""
+
+    summary: str = Field(description="One paragraph: what this case is")
+    findings: list[str] = Field(default_factory=list, description="Facts established, each with its source")
+    hypothesis: str = Field(default="", description="The most likely explanation")
+    risk: str = Field(default="medium", description="low | medium | high")
+    proposed_actions: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="action (text), tool (catalog id or null), who (human | workflow), rationale",
+    )
+    missing_capabilities: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="kind (tool | workflow | policy | data | permission), description, why_needed",
+    )
+    recommendation: str = Field(description="route_to_workflow | human_action | retry | abandon | escalate")
+    route_to: str | None = Field(default=None, description="workflow name when recommendation is route_to_workflow")
+    owner: str = Field(default="AP Specialist", description="who should take the case")
+    confidence: float
+    rationale: str
+    status: str = "ok"
+
+
 @dataclass
 class AgentSpec:
     id: str
@@ -252,7 +276,217 @@ def _fx_discrepancy(inputs: dict[str, Any], t: Any) -> dict[str, Any]:
     }
 
 
+def _fx_investigate(inputs: dict[str, Any], t: Any) -> dict[str, Any]:
+    """The deterministic stand-in for the investigator: a few recognisable situations, a generic reading otherwise.
+    It only ever reads, and it reports what it would have needed."""
+    text = str(inputs.get("message") or "")
+    low = text.lower()
+    park = str(inputs.get("park_reason") or "")
+    sender = str(inputs.get("sender") or "")
+    supplier = inputs.get("supplier")
+    findings: list[str] = []
+    missing: list[dict[str, Any]] = []
+    actions: list[dict[str, Any]] = []
+    if supplier:
+        findings.append(
+            f"Sender {sender} is supplier {supplier['id']} ({supplier['name']}), payment terms {supplier.get('payment_terms_days')} days (sap.get_supplier)."
+        )
+    elif sender:
+        findings.append(f"Sender {sender} does not match any supplier contact in SAP (sap.get_supplier).")
+    if any(w in low for w in ("bank account", "bank details", "iban", "new account")):
+        try:
+            policy = t("brain.ask", question="supplier bank account change verification")
+            findings.append(f"Policy found: {policy['answer'][:160]} ({', '.join(policy['citations'])})")
+        except Exception:  # noqa: BLE001 - a missing policy is a finding
+            findings.append("No policy on supplier bank account changes in the knowledge base (brain.ask).")
+            missing.append(
+                {
+                    "kind": "policy",
+                    "description": "Supplier bank account change: verification steps and who may approve",
+                    "why_needed": "The case cannot be decided without a rule; today it rests on one person's judgement.",
+                }
+            )
+        try:
+            recent = t(
+                "sap.find_invoice_by_supplier_reference",
+                supplier_id=supplier["id"] if supplier else "",
+                supplier_reference="",
+            )
+            findings.append(f"Open invoices for the supplier: {recent}")
+        except Exception:  # noqa: BLE001
+            pass
+        missing.append(
+            {
+                "kind": "workflow",
+                "description": "Supplier master data change (bank account) with two-person verification by phone to the known contact",
+                "why_needed": "The request arrives by email and is a known fraud pattern; it must never be executed from the mail alone.",
+            }
+        )
+        missing.append(
+            {
+                "kind": "tool",
+                "description": "sap.update_supplier_bank_account (write, needs a decided two-person approval)",
+                "why_needed": "No catalog tool changes supplier master data.",
+            }
+        )
+        actions = [
+            {
+                "action": "Call the supplier's known contact on the number in SAP (not the number in the mail) and verify the change",
+                "tool": None,
+                "who": "human",
+                "rationale": "Independent channel; the mail itself is untrusted.",
+            },
+            {
+                "action": "Update the bank account in SAP only after verification and a second approval",
+                "tool": "sap.update_supplier_bank_account",
+                "who": "workflow",
+                "rationale": "Master data write; needs a gate the platform does not have yet.",
+            },
+            {
+                "action": "Hold payment runs for this supplier until verified",
+                "tool": None,
+                "who": "human",
+                "rationale": "Limits the loss if the request is fraudulent.",
+            },
+        ]
+        return {
+            "summary": f"A request to change the bank account of {supplier['name'] if supplier else 'an unknown sender'} arrived by email. No workflow covers supplier master data changes.",
+            "findings": findings,
+            "hypothesis": "Possible payment diversion fraud; a genuine change is also possible but must be verified independently.",
+            "risk": "high",
+            "proposed_actions": actions,
+            "missing_capabilities": missing,
+            "recommendation": "human_action",
+            "route_to": None,
+            "owner": "Supplier Manager",
+            "confidence": 0.85,
+            "rationale": "The pattern (email, urgency, bank details) matches the fraud playbooks; nothing here may be automated without a verification gate.",
+        }
+    if "goods_receipt_missing" in park or "not_received" in park:
+        po_id = inputs.get("trigger", {}).get("po_id") or (inputs.get("facts") or {}).get("po_id")
+        if po_id:
+            try:
+                po = t("sap.get_purchase_order", po_number=po_id)
+                findings.append(
+                    f"PO {po_id}: status {po.get('status')}, delivery date {po.get('delivery_date')}, plant {po.get('plant')} (sap.get_purchase_order)."
+                )
+            except Exception as exc:  # noqa: BLE001
+                findings.append(f"PO {po_id} could not be read: {exc}")
+        findings.append(
+            "The invoice names a PO with no goods receipt; either the goods are not delivered or the receipt was not posted."
+        )
+        missing.append(
+            {
+                "kind": "tool",
+                "description": "warehouse.request_goods_receipt_confirmation (ask the receiving plant whether the goods arrived)",
+                "why_needed": "The workflow can only wait; it cannot ask the warehouse.",
+            }
+        )
+        return {
+            "summary": "Invoice parked: no goods receipt on the PO it names.",
+            "findings": findings,
+            "hypothesis": "The delivery has not been receipted at the plant yet.",
+            "risk": "low",
+            "proposed_actions": [
+                {
+                    "action": "Ask the plant to post the goods receipt if the goods arrived",
+                    "tool": None,
+                    "who": "human",
+                    "rationale": "No tool reaches the warehouse.",
+                },
+                {
+                    "action": "Retry the invoice step once the receipt exists",
+                    "tool": None,
+                    "who": "workflow",
+                    "rationale": "The modelled path then continues.",
+                },
+            ],
+            "missing_capabilities": missing,
+            "recommendation": "retry",
+            "route_to": None,
+            "owner": "AP Specialist",
+            "confidence": 0.8,
+            "rationale": "A missing receipt is a timing problem in most cases; the fix is outside the platform's tools.",
+        }
+    if any(w in low for w in ("paid", "payment", "when will")):
+        return {
+            "summary": "A payment question; the supplier query workflow covers it.",
+            "findings": findings,
+            "hypothesis": "",
+            "risk": "low",
+            "proposed_actions": [],
+            "missing_capabilities": [],
+            "recommendation": "route_to_workflow",
+            "route_to": "supplier_query",
+            "owner": "Supplier Manager",
+            "confidence": 0.9,
+            "rationale": "Classifier match.",
+        }
+    kind = (
+        "contract"
+        if "contract" in low
+        else ("complaint" if any(w in low for w in ("complaint", "quality", "damaged")) else "other")
+    )
+    try:
+        hit = t("brain.ask", question=text[:200])
+        findings.append(f"Knowledge base: {hit['answer'][:160]} ({', '.join(hit['citations'])})")
+    except Exception:  # noqa: BLE001
+        findings.append("Nothing in the knowledge base matches the message (brain.ask).")
+    missing.append(
+        {
+            "kind": "workflow",
+            "description": f"A workflow for '{kind}' messages from suppliers",
+            "why_needed": "No modelled path; every such message ends with a person.",
+        }
+    )
+    return {
+        "summary": f"An uncovered '{kind}' message from {sender or 'an unknown sender'}.",
+        "findings": findings,
+        "hypothesis": "",
+        "risk": "medium",
+        "proposed_actions": [
+            {
+                "action": "A person reads and answers the message",
+                "tool": None,
+                "who": "human",
+                "rationale": "No path exists.",
+            }
+        ],
+        "missing_capabilities": missing,
+        "recommendation": "human_action",
+        "route_to": None,
+        "owner": "Supplier Manager" if supplier else "AP Specialist",
+        "confidence": 0.7,
+        "rationale": "Generic reading: no workflow and no playbook match.",
+    }
+
+
+READ_TOOLS = tuple(tid for tid, s in registry.specs.items() if s.side_effect == "read")
+
 AGENTS: dict[str, AgentSpec] = {
+    "agent.investigator": AgentSpec(
+        id="agent.investigator",
+        name="Investigator agent",
+        purpose="Work a case no workflow covers: establish the facts with read-only tools, propose what should happen, and report what the platform lacks. Never act.",
+        instructions=(
+            "You are the Investigator agent. A message or a parked process instance has fallen outside every modelled workflow. "
+            "Establish the facts with the read-only tools you have (SAP, cases, mail, knowledge base). Then: summarise the case, "
+            "state a hypothesis and the risk, propose actions (say for each whether a human or a workflow would do it and which catalog "
+            "tool it would need, or null), and list the capabilities the platform is missing to handle this case: tools, workflows, "
+            "policies, data or permissions. If an existing workflow covers it, recommend route_to_workflow with its name. "
+            "You cannot change anything; a proposal is read by a person who decides. Available workflows and the tool catalog are in the data. "
+            + INJECTION_GUARD
+        ),
+        tools=READ_TOOLS,
+        output=InvestigationOut,
+        fixture=_fx_investigate,
+        max_tool_calls=20,
+        permissions=("read.all",),
+        justification=[
+            "Rule 7 — the unknown case needs judgement; an agent with read-only tools proposes, the platform's gates and a human dispose.",
+            "The loopback: every missing capability it reports is a discovery the studio turns into a new path.",
+        ],
+    ),
     "agent.credit_note_request": AgentSpec(
         id="agent.credit_note_request",
         name="Credit note request agent",

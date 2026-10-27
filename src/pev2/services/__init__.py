@@ -3,6 +3,7 @@
 from pev2.tools import registry
 
 ALLOW: dict[str, list[str]] = {
+    "service.open_case": ["jira.create_issue"],  # the uncovered-case workflow: a case for a person, nothing else
     "service.open_case_and_assign_owner": ["jira.get_issue", "jira.create_issue", "jira.assign_issue"],
     "service.receive_invoice": [
         "sap.get_invoice",
