@@ -42,6 +42,7 @@ create table if not exists wf_event (id integer primary key autoincrement, kind 
 create table if not exists wf_approval (id text primary key, instance_id text, name text, owner text, payload text, status text, decided_by text, decision_note text, requested_at text, due_at text, decided_at text, escalated_to text);
 create table if not exists wf_idempotency (key text primary key, tool text, result text, created_at text);
 create table if not exists wf_audit (id integer primary key autoincrement, instance_id text, step text, kind text, component text, status text, detail text, at text);
+create table if not exists wf_proposal (id integer primary key autoincrement, instance_id text, payload text, created_at text);
 create table if not exists wf_discovery (id integer primary key autoincrement, instance_id text, kind text, description text, fingerprint text, evidence text, status text, created_at text);
 create table if not exists wf_review (id integer primary key autoincrement, instance_id text, step text, reason text, payload text, status text, created_at text, decided_at text);
 """
@@ -210,6 +211,7 @@ def reset(keep_fixtures: bool = False) -> None:
         "wf_audit",
         "wf_review",
         "wf_discovery",
+        "wf_proposal",
     ):
         conn.execute(f"delete from {table}")
     if not keep_fixtures:

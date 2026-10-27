@@ -12,7 +12,10 @@ Three rules hold here, in code, not in a prompt:
 from __future__ import annotations
 
 import hashlib
+import json
 import re
+import urllib.error
+import urllib.request
 from typing import Any
 
 from pev2 import config, store
@@ -94,6 +97,10 @@ def record_discoveries(instance_id: str | None, out: dict[str, Any]) -> list[dic
                     }
                 )
     now = config.now().isoformat()
+    store.run(
+        "insert into wf_proposal (instance_id, payload, created_at) values (?, ?, ?)",
+        (instance_id, store.dumps({k: v for k, v in out.items() if k not in ("discoveries",)}), now),
+    )
     for d in found:
         d["fingerprint"] = _fingerprint(d["kind"], d["description"])
         store.run(
@@ -222,3 +229,73 @@ def gap_report() -> str:
                 "",
             ]
     return "\n".join(lines)
+
+
+def gap_report_json() -> dict[str, Any]:
+    """The structured gap report: the grouped gaps, every investigator proposal behind them, and the catalog as it
+    was. The studio imports this directly as new scenarios."""
+    cases = []
+    for row in store.rows(
+        "select p.*, i.workflow, i.trigger from wf_proposal p left join wf_instance i on i.id = p.instance_id order by p.id"
+    ):
+        payload = store.loads(row["payload"])
+        cases.append(
+            {
+                "instance_id": row["instance_id"],
+                "workflow": row["workflow"],
+                "trigger": store.loads(row["trigger"]) if row["trigger"] else {},
+                "created_at": row["created_at"],
+                **{
+                    k: payload.get(k)
+                    for k in (
+                        "summary",
+                        "hypothesis",
+                        "risk",
+                        "owner",
+                        "recommendation",
+                        "findings",
+                        "proposed_actions",
+                        "missing_capabilities",
+                        "rationale",
+                    )
+                },
+            }
+        )
+    return {
+        "source": "ProcurementEngineV2",
+        "generated_at": config.now().isoformat(),
+        "gaps": [{**g, "instances": [i for i in (g["instances"] or "").split(",") if i]} for g in discoveries("all")],
+        "cases": cases,
+        "catalog": catalog(),
+    }
+
+
+def send_to_studio(
+    project_id: str, studio_url: str | None = None, user: str | None = None, draft_with_llm: bool = False
+) -> dict[str, Any]:
+    """Post the structured gap report to the studio; it answers with the scenarios it created."""
+    base = (studio_url or config.studio_url()).rstrip("/")
+    body = json.dumps({"report": gap_report_json(), "draft_with_llm": draft_with_llm}).encode()
+    req = urllib.request.Request(
+        f"{base}/api/projects/{project_id}/scenarios/import-gap-report",
+        data=body,
+        method="POST",
+        headers={"Content-Type": "application/json", "X-User": user or config.studio_user()},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:  # noqa: S310 - the studio URL is configuration, not input
+            return dict(json.loads(resp.read().decode()))
+    except urllib.error.HTTPError as exc:
+        raise RuntimeError(f"studio answered {exc.code}: {exc.read().decode()[:300]}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"studio not reachable at {base}: {exc.reason}") from exc
+
+
+def studio_projects(studio_url: str | None = None, user: str | None = None) -> list[dict[str, Any]]:
+    base = (studio_url or config.studio_url()).rstrip("/")
+    req = urllib.request.Request(f"{base}/api/projects", headers={"X-User": user or config.studio_user()})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:  # noqa: S310
+            return list(json.loads(resp.read().decode()))
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"studio not reachable at {base}: {exc.reason}") from exc

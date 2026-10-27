@@ -21,7 +21,15 @@ import gradio as gr
 
 from pev2 import config, store
 from pev2.app import ready, runtime
-from pev2.investigation import discoveries, gap_report, investigate_instance, set_discovery_status
+from pev2.investigation import (
+    discoveries,
+    gap_report,
+    gap_report_json,
+    investigate_instance,
+    send_to_studio,
+    set_discovery_status,
+    studio_projects,
+)
 from pev2.observability import feed
 from pev2.tools import brain, email, sap
 
@@ -322,6 +330,38 @@ def export_gap_report() -> str:
     return f"Written to `{path}`; paste it into the studio as the brief for the next scenario.\n\n---\n\n" + text
 
 
+def load_studio_projects(url: str, user: str) -> Any:
+    try:
+        rows = studio_projects(url, user)
+    except RuntimeError as exc:
+        return gr.Dropdown(choices=[], value=None, label=f"Studio project ({exc})")
+    choices = [f"{p['id']} · {p['name']}" for p in rows]
+    return gr.Dropdown(choices=choices, value=choices[0] if choices else None, label="Studio project")
+
+
+def send_report(url: str, user: str, project_choice: str | None, draft: bool) -> str:
+    if not project_choice:
+        return "Load the studio projects and pick one first."
+    pid = project_choice.split(" ·")[0]
+    try:
+        result = send_to_studio(pid, url, user, draft)
+    except RuntimeError as exc:
+        return f"Not sent: {exc}"
+    names = "\n".join(f"- **{s['name']}** — {s.get('description', '')[:140]}" for s in result.get("scenarios", []))
+    report = gap_report_json()
+    (config.ROOT / "data" / "runtime" / "gap-report.json").write_text(
+        json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    return (
+        f"Sent {len(report['gaps'])} gaps and {len(report['cases'])} investigator cases. The studio created {len(result.get('scenarios', []))} scenario(s):\n{names}\n\nOpen the studio at {url.rstrip('/')}/projects/{pid} to model them."
+        + (
+            f"\n\n{result['proposals']} LLM draft proposal(s) are waiting in the Process workspace."
+            if result.get("proposals")
+            else ""
+        )
+    )
+
+
 def outages(sap_down: bool, email_down: bool, brain_down: bool, jira_down: bool) -> str:
     from pev2.tools import registry
 
@@ -545,8 +585,20 @@ def build_app() -> gr.Blocks:
                     d_status = gr.Radio(["accepted", "dismissed", "open"], value="accepted", label="Mark as")
                     d_out = gr.Markdown()
                     gr.Button("Apply").click(discovery_set, [d_pick, d_status], d_out)
-                g_out = gr.Markdown()
-                gr.Button("Export gap report for the studio", variant="primary").click(export_gap_report, None, g_out)
+                gr.Markdown(
+                    "**Send to the Agent Architecture Studio** — the structured report (gaps, investigator cases, catalog) becomes new scenarios in a project there."
+                )
+                with gr.Row():
+                    s_url = gr.Textbox(value=config.studio_url(), label="Studio URL")
+                    s_user = gr.Textbox(value=config.studio_user(), label="Studio user (X-User)")
+                    s_proj = gr.Dropdown([], label="Studio project")
+                    s_draft = gr.Checkbox(label="Ask the studio's LLM to draft the steps", value=False)
+                with gr.Row():
+                    gr.Button("Load studio projects").click(load_studio_projects, [s_url, s_user], s_proj)
+                    gr.Button("Send gap report to the studio", variant="primary").click(
+                        send_report, [s_url, s_user, s_proj, s_draft], g_out := gr.Markdown()
+                    )
+                gr.Button("Export gap report as markdown").click(export_gap_report, None, g_out)
             with gr.Tab("Cases & mail"):
                 gr.Markdown("**Cases** (simulated case management)")
                 ct = gr.Dataframe(

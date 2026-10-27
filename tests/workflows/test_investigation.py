@@ -122,3 +122,47 @@ def test_api_discoveries_round_trip(world):
             c.post(f"/api/discoveries/{fp}", json={"decision": "accepted", "by": "Jan"}).json()["status"] == "accepted"
         )
         assert "Gap report" in c.get("/api/discoveries/report").text
+
+
+def test_structured_gap_report_carries_cases_and_catalog(rt):
+    from pev2.investigation import gap_report_json
+
+    rt.start("unknown_case", {"sender": "ap@danfilm-plast.example", "message": BANK})
+    report = gap_report_json()
+    assert report["source"] == "ProcurementEngineV2" and report["gaps"] and report["cases"]
+    case = report["cases"][0]
+    assert case["owner"] == "Supplier Manager" and case["proposed_actions"] and case["trigger"]["message"] == BANK
+    assert "supplier_query" in report["catalog"]["workflows"] and "sap.get_supplier" in report["catalog"]["tools"]
+    assert all(isinstance(g["instances"], list) for g in report["gaps"])
+
+
+def test_send_to_studio_posts_the_report(rt, monkeypatch):
+    import json
+
+    from pev2 import investigation
+
+    rt.start("unknown_case", {"sender": "ap@danfilm-plast.example", "message": BANK})
+    seen: dict[str, object] = {}
+
+    class _Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return None
+
+        def read(self):
+            return json.dumps({"scenarios": [{"name": "Supplier master data change"}], "gaps": 2, "cases": 1}).encode()
+
+    def fake_urlopen(req, timeout=0):
+        seen["url"] = req.full_url
+        seen["user"] = req.get_header("X-user")
+        seen["body"] = json.loads(req.data.decode())
+        return _Resp()
+
+    monkeypatch.setattr(investigation.urllib.request, "urlopen", fake_urlopen)
+    result = investigation.send_to_studio("proj1", "http://studio.example", "jan")
+    assert (
+        seen["url"] == "http://studio.example/api/projects/proj1/scenarios/import-gap-report" and seen["user"] == "jan"
+    )
+    assert seen["body"]["report"]["gaps"] and result["scenarios"][0]["name"].startswith("Supplier")

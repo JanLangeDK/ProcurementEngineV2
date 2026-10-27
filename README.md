@@ -56,6 +56,10 @@ platform is missing to handle the case. Three things are guaranteed in code, not
   **gap report** is the brief the Agent Architecture Studio turns into the next scenario. Ten parked cases with the
   same gap become one new modelled path.
 
+**Send gap report to the studio** on the Discoveries tab posts the structured report (gaps, investigator cases, the
+catalog) to `PEV2_STUDIO_URL`; the studio turns every workflow gap into a scenario whose process skeleton is drawn from
+the investigator's findings and proposals. Model it there, generate, export, build: the loop is closed.
+
 The same investigator can be asked about any parked instance ("Ask the investigator" in Reviews) without changing it.
 
 ## How it is built (section 11 of the architecture document)

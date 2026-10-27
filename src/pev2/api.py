@@ -12,7 +12,14 @@ from pydantic import BaseModel
 from pev2 import store
 from pev2.app import ready, runtime
 from pev2.engine.runtime import WORKFLOW_META
-from pev2.investigation import discoveries, gap_report, investigate_instance, set_discovery_status
+from pev2.investigation import (
+    discoveries,
+    gap_report,
+    gap_report_json,
+    investigate_instance,
+    send_to_studio,
+    set_discovery_status,
+)
 from pev2.observability import feed
 from pev2.tools import email, sap
 
@@ -162,3 +169,24 @@ def mark_discovery(fingerprint: str, body: DecisionBody) -> dict[str, str]:
 @app.get("/api/discoveries/report", response_class=PlainTextResponse)
 def discovery_report() -> str:
     return gap_report()
+
+
+@app.get("/api/discoveries/report.json")
+def discovery_report_json() -> dict[str, Any]:
+    return gap_report_json()
+
+
+class SendBody(BaseModel):
+    project_id: str
+    studio_url: str | None = None
+    user: str | None = None
+    draft_with_llm: bool = False
+
+
+@app.post("/api/discoveries/send")
+def discovery_send(body: SendBody) -> dict[str, Any]:
+    """The loopback: the structured gap report becomes scenarios in the Agent Architecture Studio."""
+    try:
+        return send_to_studio(body.project_id, body.studio_url, body.user, body.draft_with_llm)
+    except RuntimeError as exc:
+        raise HTTPException(502, str(exc)) from exc

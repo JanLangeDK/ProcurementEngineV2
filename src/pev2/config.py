@@ -54,3 +54,12 @@ def llm_settings() -> dict[str, str | None]:
         "model": os.getenv("PEV2_LLM_MODEL", "gpt-4o-mini"),
         "temperature": os.getenv("PEV2_LLM_TEMPERATURE"),
     }
+
+
+def studio_url() -> str:
+    """The Agent Architecture Studio that receives the gap report (the loopback)."""
+    return os.environ.get("PEV2_STUDIO_URL", "http://localhost:8000").rstrip("/")
+
+
+def studio_user() -> str:
+    return os.environ.get("PEV2_STUDIO_USER", "local")  # the studio's default identity
